@@ -129,6 +129,15 @@ fakeroot do_rootfs () {
 		done
 	fi
 
+	# remove some dependence
+	#if [ ${IMAGE_PKGTYPE} == "ipk" ]; then
+	#	for pkgfile in $(find ${DEPLOY_DIR}/${IMAGE_PKGTYPE} -name Packages)
+	#	do
+	#		python ${OE_BASE}/tools/rmlibs.py ${pkgfile} ${pkgfile}_newer
+	#		mv ${pkgfile}_newer ${pkgfile}
+	#	done
+	#fi
+
 	rootfs_${IMAGE_PKGTYPE}_do_rootfs
 
 	insert_feed_uris

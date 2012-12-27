@@ -1,7 +1,7 @@
 DESCRIPTION = "StreamRipper lets you record streaming mp3 to your hard drive."
 SECTION = "console/multimedia"
 LICENSE = "GPL"
-DEPENDS= "libogg libvorbis"
+DEPENDS= "libogg libvorbis glib-2.0"
 RDEPENDS= "libogg libvorbis"
 
 SRC_URI = "${SOURCEFORGE_MIRROR}/streamripper/streamripper-${PV}.tar.gz;name=src"

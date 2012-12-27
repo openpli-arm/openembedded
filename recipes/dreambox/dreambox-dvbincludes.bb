@@ -42,3 +42,13 @@ do_install_mipsel() {
 	done;
 }
 
+do_install_arm() {
+	install -d ${STAGING_INCDIR}/ci
+	install -d ${STAGING_INCDIR}/dbox
+	install -d ${STAGING_INCDIR}/dreambox
+	install -d ${STAGING_INCDIR}/tuxbox
+	for f in ${INPUT_FILES}; do
+		install -m 0644 ${S}/$f ${STAGING_INCDIR}/$f
+	done;
+}
+

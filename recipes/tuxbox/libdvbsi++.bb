@@ -2,12 +2,15 @@ DESCRIPTION = "libdvbsi++ by obi@saftware.de"
 DEPENDS = "dreambox-dvbincludes"
 MAINTAINER = "Felix Domke <tmbinc@elitdvb.net>"
 
-SRC_URI = "cvs://anoncvs@cvs.tuxbox.org/cvs/tuxbox;module=apps/dvb/libdvbsi++;method=ext"
+#inherit gitpkgv
 
+SRCREV = "bf0c2bb7b326b93713629dbf74f63a0a54ffe59d"
+PV = "1.0+gitr${SRCREV}"
+#PKGV = "1.0+git${GITPKGV}"
 PR = "r0"
-PV = "0.0+cvs${SRCDATE}"
+SRC_URI = "git://git.opendreambox.org/git/obi/libdvbsi++.git;protocol=git"
 
-S = "${WORKDIR}/libdvbsi++"
+S = "${WORKDIR}/git"
 
 inherit autotools pkgconfig
 

@@ -1,10 +1,15 @@
 #Angstrom bootstrap image
 require console-base-image.bb
+# task-base \
+DEPENDS += "ffmpeg \
+			libsdl "
 
-DEPENDS += "task-base-extended \
-	   "
+# task-base \
+IMAGE_INSTALL += "ffmpeg \
+				libsdl "
 
-IMAGE_INSTALL += "task-base-extended \
-	    "
+EXTRA_IMAGECMD_jffs2 = " hello world"
+IMAGE_CMD_jffs2 = "echo"
+
 
 export IMAGE_BASENAME = "console-image"

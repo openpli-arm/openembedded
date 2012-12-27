@@ -1,0 +1,11 @@
+--- libmatroska-0.9.0/make/linux/Makefile	2010-03-23 23:58:04.000000000 +0800
++++ libmatroska-0.9.0-add-ldflags/make/linux/Makefile	2012-05-10 11:38:27.745644747 +0800
+@@ -99,7 +99,7 @@
+ 	$(RANLIB) $@
+ 
+ $(LIBRARY_SO): $(objects_so)
+-	$(CXX) -shared -Wl,-soname,$(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) -lebml
++	$(CXX) -shared -Wl,-soname,$(LIBRARY_SO_VER) -o $(LIBRARY_SO_VER) $(objects_so) -lebml $(LDFLAGS)
+ 	rm -f $(LIBRARY_SO)
+ 	ln -s $(LIBRARY_SO_VER) $(LIBRARY_SO)
+ 

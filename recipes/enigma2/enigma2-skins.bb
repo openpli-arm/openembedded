@@ -1,8 +1,9 @@
 DESCRIPTION = "Skins for Enigma2"
 MAINTAINER = "Felix Domke <tmbinc@elitedvb.net>"
 RDEPENDS = ""
-PACKAGES = "${PN}-meta ${PN}"
+PACKAGES = "${PN}-meta ${PN} enigma2-plugin-skins-dmconcinnity-hd-transp-libs"
 PACKAGES_DYNAMIC = "enigma2-plugin-skins-*"
+PROVIDES = "enigma2-plugin-skins-dmconcinnity-hd-transp"
 
 inherit gitpkgv
 
@@ -12,6 +13,7 @@ PR = "r1"
 BRANCH = "master"
 
 SRC_URI = "git://schwerkraft.elitedvb.net/enigma2-skins/enigma2-skins.git;protocol=git;branch=${BRANCH}"
+SRC_URI_arm = "git://git@192.168.0.218:3121/opt/git/openpli/enigma2-skins.git;protocol=ssh;branch=${BRANCH}"
 
 #include examples of openpli widgets
 SRC_URI_append = " \
@@ -24,6 +26,9 @@ SRC_URI_append = " \
 ALLOW_EMPTY = "1"
 FILES_${PN} = "/usr/share/enigma2 /usr/share/fonts"
 FILES_${PN}-meta = "${datadir}/meta"
+#TODO: Help me to incorprate enigma2-plugin-skins-dmconcinnity-hd-transp-libs into enigma2-plugin-skins-dmconcinnity-hd-transp
+FILES_enigma2-plugin-skins-dmconcinnity-hd-transp-libs = "/usr/lib/enigma2"
+RDEPENDS_enigma2-plugin-skins-dmconcinnity-hd-transp = "enigma2-plugin-skins-dmconcinnity-hd-transp-libs"
 RDEPENDS_${PN}-meta = ""
 
 inherit autotools

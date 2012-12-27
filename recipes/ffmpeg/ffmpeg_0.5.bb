@@ -22,6 +22,8 @@ EXTRA_FFCONF_armv7a = "--cpu=cortex-a8"
 CFLAGS_append_armv7a = " -fPIC -DPIC"
 EXTRA_FFCONF ?= ""
 
+# --cross-prefix=${TARGET_PREFIX} \
+
 EXTRA_OECONF = " \
         --enable-shared \
         --enable-pthreads \
@@ -30,7 +32,7 @@ EXTRA_OECONF = " \
         --enable-nonfree \
         --enable-postproc \
         \
-        --cross-prefix=${TARGET_PREFIX} \
+        --cross-prefix=arm-linux- \
         --prefix=${prefix}/ \
         \
         --enable-x11grab \
@@ -48,6 +50,7 @@ EXTRA_OECONF = " \
         --extra-cflags="${TARGET_CFLAGS} ${HOST_CC_ARCH}${TOOLCHAIN_OPTIONS}" \
         --extra-ldflags="${TARGET_LDFLAGS}" \
         --enable-hardcoded-tables \
+        --enable-ffplay \
         ${EXTRA_FFCONF} \
 "
 

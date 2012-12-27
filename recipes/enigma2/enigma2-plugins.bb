@@ -17,6 +17,12 @@ EXTRA_OECONF = " \
 	STAGING_INCDIR=${STAGING_INCDIR} \
 	STAGING_LIBDIR=${STAGING_LIBDIR} \
 "
+EXTRA_OECONF_arm = " \
+	BUILD_SYS=${BUILD_SYS} \
+	HOST_SYS=${BASEPKG_HOST_SYS} \
+	STAGING_INCDIR=${STAGING_INCDIR} \
+	STAGING_LIBDIR=${STAGING_LIBDIR} \
+"
 
 CONFFILES_${PN} += "${sysconfdir}/enigma2/movietags"
 FILES_${PN} += " /usr/share/enigma2 /usr/share/fonts "

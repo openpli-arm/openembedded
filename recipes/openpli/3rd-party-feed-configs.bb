@@ -9,6 +9,14 @@ do_compile() {
         echo "src/gz ${DISTRO_FEED_PREFIX}-${feed} ${DISTRO_FEED_URI}/${feed}" > ${S}/${sysconfdir}/opkg/${feed}-feed.conf
     done
 }
+
+do_compile_arm() {
+    mkdir -p ${S}/${sysconfdir}/opkg
+    for feed in ${FEEDS}; do
+        echo "#src/gz ${DISTRO_FEED_PREFIX}-${feed} ${DISTRO_FEED_URI}/${feed}" > ${S}/${sysconfdir}/opkg/${feed}-feed.conf
+    done
+}
+
 do_install () {
         install -d ${D}${sysconfdir}/opkg
         install -m 0644 ${S}/${sysconfdir}/opkg/* ${D}${sysconfdir}/opkg/

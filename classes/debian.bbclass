@@ -63,7 +63,7 @@ python debian_package_name_hook () {
 							if m and not m.group(1) in sonames:
 								sonames.append(m.group(1))
 
-		bb.debug(1, 'LIBNAMES: pkg %s libs %d bins %d sonames %s' % (orig_pkg, has_libs, has_bins, sonames))
+		bb.debug(1, 'LIBNAMES(archer): pkg %s libs %d bins %d sonames %s' % (orig_pkg, has_libs, has_bins, sonames))
 		soname = None
 		if len(sonames) == 1:
 			soname = sonames[0]

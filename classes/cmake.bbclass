@@ -17,6 +17,9 @@ OECMAKE_BUILDPATH ?= ""
 # C/C++ Compiler (without cpu arch/tune arguments)
 OECMAKE_C_COMPILER ?= "`echo ${CC} | sed 's/^\([^ ]*\).*/\1/'`"
 OECMAKE_CXX_COMPILER ?= "`echo ${CXX} | sed 's/^\([^ ]*\).*/\1/'`"
+OECMAKE_AR ?= "`echo ${AR} | sed 's/^\([^ ]*\).*/\1/'`"
+OECMAKE_RANLIB ?= "`echo ${RANLIB} | sed 's/^\([^ ]*\).*/\1/'`"
+OECMAKE_LINKER ?= "`echo ${LD} | sed 's/^\([^ ]*\).*/\1/'`"
 
 # Compiler flags
 OECMAKE_C_FLAGS ?= "${HOST_CC_ARCH} ${TOOLCHAIN_OPTIONS} ${TARGET_CPPFLAGS}"
@@ -31,6 +34,9 @@ cmake_do_generate_toolchain_file() {
   echo "set( CMAKE_SYSTEM_PROCESSOR ${TARGET_ARCH} )" >> ${WORKDIR}/toolchain.cmake
   echo "set( CMAKE_C_COMPILER ${OECMAKE_C_COMPILER} )" >> ${WORKDIR}/toolchain.cmake
   echo "set( CMAKE_CXX_COMPILER ${OECMAKE_CXX_COMPILER} )" >> ${WORKDIR}/toolchain.cmake
+  echo "set( CMAKE_AR ${OECMAKE_AR} )" >> ${WORKDIR}/toolchain.cmake
+  echo "set( CMAKE_RANLIB ${OECMAKE_RANLIB} )" >> ${WORKDIR}/toolchain.cmake
+  echo "set( CMAKE_LINKER ${OECMAKE_LINKER} )" >> ${WORKDIR}/toolchain.cmake
   echo "set( CMAKE_C_FLAGS \"${OECMAKE_C_FLAGS}\" CACHE STRING \"OpenEmbedded CFLAGS\" )" >> ${WORKDIR}/toolchain.cmake
   echo "set( CMAKE_CXX_FLAGS \"${OECMAKE_CXX_FLAGS}\" CACHE STRING \"OpenEmbedded CXXFLAGS\" )" >> ${WORKDIR}/toolchain.cmake
   echo "set( CMAKE_C_FLAGS_RELEASE \"${OECMAKE_C_FLAGS_RELEASE}\" CACHE STRING \"CFLAGS for release\" )" >> ${WORKDIR}/toolchain.cmake
@@ -43,7 +49,7 @@ cmake_do_generate_toolchain_file() {
   echo "set( CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY )" >> ${WORKDIR}/toolchain.cmake
   echo "set( CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY )" >> ${WORKDIR}/toolchain.cmake
 # Use native cmake modules
-  echo "set( CMAKE_MODULE_PATH ${STAGING_DIR_NATIVE}/usr/share/cmake-2.6/Modules/ )" >> ${WORKDIR}/toolchain.cmake
+  echo "set( CMAKE_MODULE_PATH ${STAGING_DIR_NATIVE}/usr/share/cmake-2.8/Modules/ )" >> ${WORKDIR}/toolchain.cmake
 }
 
 addtask generate_toolchain_file after do_patch before do_configure

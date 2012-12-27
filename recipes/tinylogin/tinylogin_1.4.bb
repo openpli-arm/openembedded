@@ -18,6 +18,7 @@ EXTRA_OEMAKE = ""
 
 do_compile () {
 	oe_runmake 'CC=${CC}' 'CROSS=${HOST_PREFIX}'
+	#oe_runmake 'CC=${CC}' 'CROSS=${HOST_PREFIX}' 'AR=${AR}' 'STRIP=${STRIP}'
 }
 
 do_install () {

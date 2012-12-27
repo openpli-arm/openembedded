@@ -8,6 +8,8 @@ PROVIDES += "virtual/${TARGET_PREFIX}depmod virtual/${TARGET_PREFIX}depmod-2.6"
 RDEPENDS_${PN} = ""
 
 EXTRA_OECONF_append = " --program-prefix=${TARGET_PREFIX}"
+EXTRA_OECONF_append_arm = " --program-prefix=${TARGET_PREFIX} \
+							--host=arm-linux"
 
 do_install_append () {
         mv ${D}${bindir}/${TARGET_PREFIX}depmod ${D}${bindir}/${TARGET_PREFIX}depmod-2.6

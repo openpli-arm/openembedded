@@ -1,0 +1,10 @@
+--- perl-5.8.8-orig/Configure	2012-07-07 19:46:40.903742803 +0800
++++ perl-5.8.8/Configure	2012-07-07 19:47:49.683744058 +0800
+@@ -1263,6 +1263,7 @@
+ glibpth="$glibpth /usr/ccs/lib /usr/ucblib /usr/local/lib"
+ test -f /usr/shlib/libc.so && glibpth="/usr/shlib $glibpth"
+ test -f /shlib/libc.so     && glibpth="/shlib $glibpth"
++test -f /usr/lib/*-linux-gnu/libc.so && glibpth="/usr/lib/*-linux-gnu $glibpth"
+ 
+ : Private path used by Configure to find libraries.  Its value
+ : is prepended to libpth. This variable takes care of special

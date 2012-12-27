@@ -7,7 +7,7 @@ DEPENDS = "libogg"
 SRC_URI = "${SOURCEFORGE_MIRROR}/flac/flac-${PV}.tar.gz \
 	   file://xmms.m4"
 
-inherit autotools
+inherit autotools gettext
 
 EXTRA_OECONF = "--disable-oggtest --disable-id3libtest \
 		--with-ogg-libraries=${STAGING_LIBDIR} \

@@ -2,7 +2,7 @@ DESCRIPTION = "System-V like init."
 SECTION = "base"
 LICENSE = "GPLv2+"
 HOMEPAGE = "http://freshmeat.net/projects/sysvinit/"
-PR = "r60"
+PR = "r61"
 
 # USE_VT and SERIAL_CONSOLE are generally defined by the MACHINE .conf.
 # Set PACKAGE_ARCH appropriately.
@@ -66,7 +66,7 @@ do_install () {
 	install	-d ${D}${sysconfdir}/init.d
 	install -m 0644 ${WORKDIR}/${INITTAB} ${D}${sysconfdir}/inittab
 	if [ ! -z "${SERIAL_CONSOLE}" ]; then
-		echo "S:2345:respawn:${base_sbindir}/getty ${SERIAL_CONSOLE}" >> ${D}${sysconfdir}/inittab
+		echo "#S:2345:respawn:${base_sbindir}/getty ${SERIAL_CONSOLE}" >> ${D}${sysconfdir}/inittab
 	fi
 	if [ "${USE_VT}" = "1" ]; then
 		cat <<EOF >>${D}${sysconfdir}/inittab

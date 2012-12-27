@@ -18,6 +18,7 @@ SECONDSTAGE_UPDATE_SRC = "http://sources.dreamboxupdate.com/download/7020/second
 	http://sources.dreamboxupdate.com/download/7020/${WRITENFI}"
 
 SRC_URI_append_mipsel = " ${SECONDSTAGE_UPDATE_SRC}"
+SRC_URI_append_arm = " ${SECONDSTAGE_UPDATE_SRC}"
 
 S = "${WORKDIR}"
 
@@ -36,6 +37,16 @@ do_install_mipsel() {
 	install -d ${D}/tmp
 	install ${WORKDIR}/secondstage-${MACHINE}-${PV}.nfi ${D}/tmp/secondstage.nfi
 	install -m 0755 ${WORKDIR}/${WRITENFI} ${D}/tmp/writenfi
+}
+
+do_stage_arm() {
+	install -d ${STAGING_LIBDIR}/dreambox-secondstage
+	cp ${S}/secondstage-${MACHINE}-${PV}.bin ${STAGING_LIBDIR}/dreambox-secondstage/main.bin.gz
+}
+
+do_install_arm() {
+	install -d ${D}/tmp
+	install ${WORKDIR}/secondstage-${MACHINE}-${PV}.nfi ${D}/tmp/secondstage.nfi
 }
 
 FILES_${PN} = "/tmp"

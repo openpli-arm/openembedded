@@ -1,8 +1,8 @@
 DESCRIPTION = "Enigma2 is an experimental, but useful framebuffer-based frontend for DVB functions"
 MAINTAINER = "Felix Domke <tmbinc@elitedvb.net>"
 DEMUXTOOL = "${@["replex","projectx"][bb.data.getVar("TARGET_FPU",d,1) == 'hard']}"
-DEPENDS = "jpeg libungif libmad libpng libsigc++-1.2 gettext-native \
-	dreambox-dvbincludes freetype libdvbsi++ python python-twisted swig-native  \
+DEPENDS = "jpeg libungif libmad libpng libsigc++-1.2 gettext-native dreambox-dvbincludes \
+	freetype libdvbsi++ python python-twisted swig-native  \
 	dvd+rw-tools dvdauthor mjpegtools cdrkit python-imaging ${DEMUXTOOL} \
 	libfribidi libxmlccwrap libdreamdvd libdvdcss tuxtxt-enigma2 ethtool \
 	gstreamer gst-plugins-bad gst-plugins-good gst-plugins-ugly \
@@ -18,8 +18,9 @@ RDEPENDS_${PN} = "python-codecs python-core python-lang python-re python-threadi
 	gst-plugin-apetag gst-plugin-icydemux gst-plugin-autodetect gst-plugin-audioparsersbad \
 	python-twisted-core python-elementtree \
 	enigma2-fonts \
-	glibc-gconv-iso8859-15 ethtool"
-
+	ethtool su980-play-test su980-ca-test\
+	"
+#glibc-gconv-iso8859-15
 # DVD playback is integrated, we need the libraries
 RDEPENDS_${PN} += "libdreamdvd"
 RRECOMMENDS_${PN} = "libdvdcss"
@@ -27,8 +28,11 @@ RRECOMMENDS_${PN} = "libdvdcss"
 RDEPENDS_${PN} += "${@base_contains("MACHINE_FEATURES", "blindscan", "virtual/blindscanutils" , "", d)}"
 
 # Magic is the default skin, so we should depend on it.
-DEPENDS += "enigma2-plugin-skins-magic"
-RDEPENDS_${PN} += "enigma2-plugin-skins-magic"
+#DEPENDS += "enigma2-plugin-skins-magic"
+#RDEPENDS_${PN} += "enigma2-plugin-skins-magic"
+
+DEPENDS_append_arm = " enigma2-plugin-skins-dmconcinnity-hd-transp"
+RDEPENDS_${PN}_append_arm = " enigma2-plugin-skins-dmconcinnity-hd-transp"
 
 # We depend on the font which we use for TXT subtitles (defined in skin_subtitles.xml)
 DEPENDS += "font-valis-enigma"
@@ -79,13 +83,22 @@ DESCRIPTION_append_enigma2-plugin-systemplugins-networkwizard = "provides easy s
 RDEPENDS_enigma2-plugin-extensions-dvdburn = "dvd+rw-tools dvdauthor mjpegtools cdrkit python-imaging ${DEMUXTOOL}"
 RDEPENDS_enigma2-plugin-systemplugins-hotplug = "hotplug-e2-helper"
 
-inherit gitpkgv
+DESCRIPTION_append_enigma2-plugin-extensions-factorytest = "test su980 hardware."
+DESCRIPTION_append_enigma2-plugin-extensions-oscamstatus = "shows status of your oscam server."
+RDEPENDS_enigma2-plugin-extensions-oscamstatus = "python-textutils python-pyopenssl"
 
+inherit gitpkgv
 PV = "2.7+git${SRCPV}"
 PKGV = "2.7+git${GITPKGV}"
 PR = "r26"
 
-SRC_URI = "git://openpli.git.sourceforge.net/gitroot/openpli/enigma2;protocol=git"
+#Open the following sentence and set SRCREV_pn-${PN} the git commit
+#if you want to fix the enigma2 version
+#SRCREV_pn-${PN} = "8e1da8a34c1038943fa69ed2e18ee77f6e1b18fe"
+
+#SRC_URI format for git use ssh protocol
+#git://host:port/path/to/repo.git;branch=win;protocol=ssh;user=username
+SRC_URI = "git://192.168.0.218:3121/opt/git/openpli/enigma2.git;protocol=ssh;user=git;branch=master"
 # SRC_URI = "git://${HOME}/pli/enigma2;protocol=file"
 
 S = "${WORKDIR}/git"
@@ -115,6 +128,18 @@ EXTRA_OECONF = "\
 	${@base_contains("MACHINE_FEATURES", "colorlcd", "--with-colorlcd" , "", d)} \
 	BUILD_SYS=${BUILD_SYS} \
 	HOST_SYS=${HOST_SYS} \
+	STAGING_INCDIR=${STAGING_INCDIR} \
+	STAGING_LIBDIR=${STAGING_LIBDIR} \
+	"
+
+DEPENDS_append_arm = " su980-user-libs"
+RDEPENDS_append_arm = " su980-user-libs"
+EXTRA_OECONF_arm = "\
+	--with-libsdl=no --with-boxtype=${MACHINE} \
+	${@base_contains("MACHINE_FEATURES", "textlcd", "--with-textlcd" , "", d)} \
+	${@base_contains("MACHINE_FEATURES", "colorlcd", "--with-colorlcd" , "", d)} \
+	BUILD_SYS=${BUILD_SYS} \
+	HOST_SYS=${BASEPKG_HOST_SYS} \
 	STAGING_INCDIR=${STAGING_INCDIR} \
 	STAGING_LIBDIR=${STAGING_LIBDIR} \
 	"

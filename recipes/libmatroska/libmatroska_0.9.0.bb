@@ -9,7 +9,8 @@ DEPENDS = "libebml"
 
 PR = "r0"
 
-SRC_URI = "http://www.bunkus.org/videotools/mkvtoolnix/sources/${PN}-${PV}.tar.bz2"
+SRC_URI = "http://www.bunkus.org/videotools/mkvtoolnix/sources/${PN}-${PV}.tar.bz2\
+			file://libmatroska-add-ldflags.patch"
 
 do_compile() {
 	oe_runmake -C make/linux

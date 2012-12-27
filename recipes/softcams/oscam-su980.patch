@@ -1,0 +1,645 @@
+Index: module-coolapi.c
+===================================================================
+--- module-coolapi.c	(revision 6573)
++++ module-coolapi.c	(working copy)
+@@ -1,6 +1,6 @@
+ /* Reversed from libcoolstream.so, this comes without any warranty */
+-
+-#ifdef COOL
++#include "oscam-config.h"
++#if defined(COOL)
+ #define _GNU_SOURCE
+ #include "globals.h"
+ 
+@@ -427,4 +427,24 @@
+ 	cnxt_kal_terminate();
+ 	cnxt_drv_term();
+ }
++
++#elif defined(SU980)
++unsigned long  cool_kal_opened = 0;
++void coolapi_open_all()
++{
++	cnxt_kal_initialize();
++	cnxt_css_drv_init();
++	cnxt_smc_init (0);
++	cool_kal_opened = 1;
++}
++
++void coolapi_close_all()
++{
++	cool_kal_opened = 0;
++	cnxt_kal_terminate();
++	cnxt_css_drv_term();
++	cnxt_smc_term();
++}
+ #endif
++
++
+Index: module-coolapi.h
+===================================================================
+--- module-coolapi.h	(revision 6573)
++++ module-coolapi.h	(working copy)
+@@ -1,120 +1,125 @@
+-#ifdef COOL
++#if defined(COOL) || defined(SU980)
+ extern int32_t cool_kal_opened;
+ static const char* const cnxt_status[] = {
+-			"CNXT_STATUS_OK",
+-			"CNXT_STATUS_ALREADY_INIT",
+-			"CNXT_STATUS_NOT_INIT",
+-			"CNXT_STATUS_INTERNAL_ERROR",
+-			"CNXT_STATUS_BAD_HANDLE",
+-			"CNXT_STATUS_BAD_PARAMETER",
+-			"CNXT_STATUS_BAD_LENGTH",
+-			"CNXT_STATUS_BAD_UNIT",
+-			"CNXT_STATUS_RESOURCE_ERROR",
+-			"CNXT_STATUS_CLOSED_HANDLE",
+-			"CNXT_STATUS_TIMEOUT",
+-			"CNXT_STATUS_NOT_ATTACHED",
+-			"CNXT_STATUS_NOT_SUPPORTED",
+-			"CNXT_STATUS_REOPENED_HANDLE",
+-			"CNXT_STATUS_INVALID",
+-			"CNXT_STATUS_DESTROYED",
+-			"CNXT_STATUS_DISCONNECTED",
+-			"CNXT_STATUS_BUSY",
+-			"CNXT_STATUS_IN_USE",
+-			"CNXT_STATUS_CANCELLED",
+-			"CNXT_STATUS_UNDEFINED",
+-			"CNXT_STATUS_UNKNOWN",
+-			"CNXT_STATUS_NOT_FOUND",
+-			"CNXT_STATUS_NOT_AVAILABLE",
+-			"CNXT_STATUS_NOT_COMPATIBLE",
+-			"CNXT_STATUS_NOT_IMPLEMENTED",
+-			"CNXT_STATUS_EMPTY",
+-			"CNXT_STATUS_FULL",
+-			"CNXT_STATUS_FAILURE",
+-			"CNXT_STATUS_ALREADY_ATTACHED",
+-			"CNXT_STATUS_ALREADY_DONE",
+-			"CNXT_STATUS_ASLEEP",
+-			"CNXT_STATUS_BAD_ATTACHMENT",
+-			"CNXT_STATUS_BAD_COMMAND",
+-			"CNXT_STATUS_BAD_GPIO",
+-			"CNXT_STATUS_BAD_INDEX",
+-			"CNXT_STATUS_BAD_MODE",
+-			"CNXT_STATUS_BAD_PID",
+-			"CNXT_STATUS_BAD_PLANE",
+-			"CNXT_STATUS_BAD_PTR",
+-			"CNXT_STATUS_BAD_RECT",
+-			"CNXT_STATUS_BAD_RGN_HANDLE",
+-			"CNXT_STATUS_BAD_SIZE",
+-			"CNXT_STATUS_INT_HANDLED",
+-			"CNXT_STATUS_INT_NOT_HANDLED",
+-			"CNXT_STATUS_NOT_SET",
+-			"CNXT_STATUS_NOT_HOOKED",
+-			"CNXT_STATUS_CC_NOT_ENABLED",
+-			"CNXT_STATUS_CLOSED_RGN",
+-			"CNXT_STATUS_COMPLETE",
+-			"CNXT_STATUS_DEMOD_ERROR",
+-			"CNXT_STATUS_INVALID_NODE",
+-			"CNXT_STATUS_DUPLICATE_NODE",
+-			"CNXT_STATUS_HARDWARE_NOT_FOUND",
+-			"CNXT_STATUS_HDCP_AUTH_FAILED",
+-			"CNXT_STATUS_HDCP_BAD_BKSV",
+-			"CNXT_STATUS_ILLEGAL_OPERATION",
+-			"CNXT_STATUS_INCOMPATIBLE_FORMATS",
+-			"CNXT_STATUS_INVALID_DEVICE",
+-			"CNXT_STATUS_INVALID_EDGE",
+-			"CNXT_STATUS_INVALID_NUMBER",
+-			"CNXT_STATUS_INVALID_STATE",
+-			"CNXT_STATUS_INVALID_TYPE",
+-			"CNXT_STATUS_NO_BUFFER",
+-			"CNXT_STATUS_NO_DESTINATION_BUF",
+-			"CNXT_STATUS_NO_OSD",
+-			"CNXT_STATUS_NO_PALETTE",
+-			"CNXT_STATUS_NO_ACK",
+-			"CNXT_STATUS_RECEIVER_HDMI_INCAPABLE",
+-			"CNXT_STATUS_RECEIVER_NOT_ATTACHED",
+-			"CNXT_STATUS_ADJUSTED",
+-			"CNXT_STATUS_CLIPPED",
+-			"CNXT_STATUS_CLIPRECT_ADJUSTED",
+-			"CNXT_STATUS_NOT_ALIGNED",
+-			"CNXT_STATUS_FIXUP_OK",
+-			"CNXT_STATUS_FIXUP_OPTION_ERROR",
+-			"CNXT_STATUS_FIXUP_ZERO_RECT",
+-			"CNXT_STATUS_UNABLE_TO_FIXUP_AND_PRESERVE",
+-			"CNXT_STATUS_UNABLE_TO_FIXUP_X",
+-			"CNXT_STATUS_UNABLE_TO_FIXUP_Y",
+-			"CNXT_STATUS_OUT_OF_BOUNDS",
+-			"CNXT_STATUS_OUTSIDE_CLIP_RECT",
+-			"CNXT_STATUS_RECT_CLIPPED",
+-			"CNXT_STATUS_RECT_ENCLOSED",
+-			"CNXT_STATUS_RECT_FIXED_UP",
+-			"CNXT_STATUS_RECT_INCLUDES",
+-			"CNXT_STATUS_RECT_NO_OVERLAP",
+-			"CNXT_STATUS_RECT_OVERLAP",
+-			"CNXT_STATUS_RECT_ZERO_AREA",
+-			"CNXT_STATUS_SERVICE_LIST_NOT_READY",
+-			"CNXT_STATUS_SERVICE_LIST_READY",
+-			"CNXT_STATUS_STOPPED",
+-			"CNXT_STATUS_SUSPENDED",
+-			"CNXT_STATUS_TERMINATED",
+-			"CNXT_STATUS_TOO_MUCH_DATA",
+-			"CNXT_STATUS_WIPE_NONE",
+-			"CNXT_STATUS_NOT_STOPPED",
+-			"CNXT_STATUS_INT_NOT_COMPLETE",
+-			"CNXT_STATUS_NOT_ALLOWED",
+-			"CNXT_STATUS_DUPLICATE_PID",
+-			"CNXT_STATUS_MAX_FILTERS_ATTACHED",
+-			"CNXT_STATUS_HW_NOT_READY",
+-			"CNXT_STATUS_OUTPUT_BUF_FULL",
+-			"CNXT_STATUS_REJECTED",
+-			"CNXT_STATUS_INVALID_PID",
+-			"CNXT_STATUS_EOF",
+-			"CNXT_STATUS_BOF",
+-			"CNXT_STATUS_MISSING_DATA"
++   /*   0  0x00  */   "CNXT_STATUS_OK",
++   /*   1  0x01  */   "CNXT_STATUS_ALREADY_INIT",
++   /*   2  0x02  */   "CNXT_STATUS_NOT_INIT",
++   /*   3  0x03  */   "CNXT_STATUS_INTERNAL_ERROR",
++   /*   4  0x04  */   "CNXT_STATUS_BAD_HANDLE",
++   /*   5  0x05  */   "CNXT_STATUS_BAD_PARAMETER",
++   /*   6  0x06  */   "CNXT_STATUS_BAD_LENGTH",
++   /*   7  0x07  */   "CNXT_STATUS_BAD_UNIT",
++   /*   8  0x08  */   "CNXT_STATUS_RESOURCE_ERROR",
++   /*   9  0x09  */   "CNXT_STATUS_CLOSED_HANDLE",
++   /*  10  0x0A  */   "CNXT_STATUS_TIMEOUT",
++   /*  11  0x0B  */   "CNXT_STATUS_NOT_ATTACHED",
++   /*  12  0x0C  */   "CNXT_STATUS_NOT_SUPPORTED",
++   /*  13  0x0D  */   "CNXT_STATUS_REOPENED_HANDLE",
++   /*  14  0x0E  */   "CNXT_STATUS_INVALID",
++   /*  15  0x0F  */   "CNXT_STATUS_DESTROYED",
++   /*  16  0x10  */   "CNXT_STATUS_DISCONNECTED",
++   /*  17  0x11  */   "CNXT_STATUS_BUSY",
++   /*  18  0x12  */   "CNXT_STATUS_IN_USE",
++   /*  19  0x13  */   "CNXT_STATUS_CANCELLED",
++   /*  20  0x14  */   "CNXT_STATUS_UNDEFINED",
++   /*  21  0x15  */   "CNXT_STATUS_UNKNOWN",
++   /*  22  0x16  */   "CNXT_STATUS_NOT_FOUND",
++   /*  23  0x17  */   "CNXT_STATUS_NOT_AVAILABLE",
++   /*  24  0x18  */   "CNXT_STATUS_NOT_COMPATIBLE",
++   /*  25  0x19  */   "CNXT_STATUS_NOT_IMPLEMENTED",
++   /*  26  0x1A  */   "CNXT_STATUS_EMPTY",
++   /*  27  0x1B  */   "CNXT_STATUS_FULL",
++   /*  28  0x1C  */   "CNXT_STATUS_FAILURE",
++   /*  29  0x1D  */   "CNXT_STATUS_ALREADY_ATTACHED",
++   /*  30  0x1E  */   "CNXT_STATUS_ALREADY_DONE",
++   /*  31  0x1F  */   "CNXT_STATUS_ASLEEP",
++   /*  32  0x20  */   "CNXT_STATUS_BAD_ATTACHMENT",
++   /*  33  0x21  */   "CNXT_STATUS_BAD_COMMAND",
++   /*  34  0x22  */   "CNXT_STATUS_BAD_GPIO",
++   /*  35  0x23  */   "CNXT_STATUS_BAD_INDEX",
++   /*  36  0x24  */   "CNXT_STATUS_BAD_MODE",
++   /*  37  0x25  */   "CNXT_STATUS_BAD_PID",
++   /*  38  0x26  */   "CNXT_STATUS_BAD_PLANE",
++   /*  39  0x27  */   "CNXT_STATUS_BAD_PTR",
++   /*  40  0x28  */   "CNXT_STATUS_BAD_RECT",
++   /*  41  0x29  */   "CNXT_STATUS_BAD_RGN_HANDLE",
++   /*  42  0x2A  */   "CNXT_STATUS_BAD_SIZE",
++   /*  43  0x2B  */   "CNXT_STATUS_INT_HANDLED",
++   /*  44  0x2C  */   "CNXT_STATUS_INT_NOT_HANDLED",
++   /*  45  0x2D  */   "CNXT_STATUS_NOT_SET",
++   /*  46  0x2E  */   "CNXT_STATUS_NOT_HOOKED",
++   /*  47  0x2F  */   "CNXT_STATUS_CC_NOT_ENABLED",
++   /*  48  0x30  */   "CNXT_STATUS_CLOSED_RGN",
++   /*  49  0x31  */   "CNXT_STATUS_COMPLETE",
++   /*  50  0x32  */   "CNXT_STATUS_DEMOD_ERROR",
++   /*  51  0x33  */   "CNXT_STATUS_INVALID_NODE",
++   /*  52  0x34  */   "CNXT_STATUS_DUPLICATE_NODE",
++   /*  53  0x35  */   "CNXT_STATUS_HARDWARE_NOT_FOUND",
++   /*  54  0x36  */   "CNXT_STATUS_HDCP_AUTH_FAILED",
++   /*  55  0x37  */   "CNXT_STATUS_HDCP_BAD_BKSV",
++   /*  56  0x38  */   "CNXT_STATUS_ILLEGAL_OPERATION",
++   /*  57  0x39  */   "CNXT_STATUS_INCOMPATIBLE_FORMATS",
++   /*  58  0x3A  */   "CNXT_STATUS_INVALID_DEVICE",
++   /*  59  0x3B  */   "CNXT_STATUS_INVALID_EDGE",
++   /*  60  0x3C  */   "CNXT_STATUS_INVALID_NUMBER",
++   /*  61  0x3D  */   "CNXT_STATUS_INVALID_STATE",
++   /*  62  0x3E  */   "CNXT_STATUS_INVALID_TYPE",
++   /*  63  0x3F  */   "CNXT_STATUS_NO_BUFFER",
++   /*  64  0x40  */   "CNXT_STATUS_NO_DESTINATION_BUF",
++   /*  65  0x41  */   "CNXT_STATUS_NO_OSD",
++   /*  66  0x42  */   "CNXT_STATUS_NO_PALETTE",
++   /*  67  0x43  */   "CNXT_STATUS_NO_ACK",
++   /*  68  0x44  */   "CNXT_STATUS_RECEIVER_HDMI_INCAPABLE",
++   /*  69  0x45  */   "CNXT_STATUS_RECEIVER_NOT_ATTACHED",
++   /*  70  0x46  */   "CNXT_STATUS_ADJUSTED",
++   /*  71  0x47  */   "CNXT_STATUS_CLIPPED",
++   /*  72  0x48  */   "CNXT_STATUS_CLIPRECT_ADJUSTED",
++   /*  73  0x49  */   "CNXT_STATUS_NOT_ALIGNED",
++   /*  74  0x4A  */   "CNXT_STATUS_FIXUP_OK",
++   /*  75  0x4B  */   "CNXT_STATUS_FIXUP_OPTION_ERROR",
++   /*  76  0x4C  */   "CNXT_STATUS_FIXUP_ZERO_RECT",
++   /*  77  0x4D  */   "CNXT_STATUS_UNABLE_TO_FIXUP_AND_PRESERVE",
++   /*  78  0x4E  */   "CNXT_STATUS_UNABLE_TO_FIXUP_X",
++   /*  79  0x4F  */   "CNXT_STATUS_UNABLE_TO_FIXUP_Y",
++   /*  80  0x50  */   "CNXT_STATUS_OUT_OF_BOUNDS",
++   /*  81  0x51  */   "CNXT_STATUS_OUTSIDE_CLIP_RECT",
++   /*  82  0x52  */   "CNXT_STATUS_RECT_CLIPPED",
++   /*  83  0x53  */   "CNXT_STATUS_RECT_ENCLOSED",
++   /*  84  0x54  */   "CNXT_STATUS_RECT_FIXED_UP",
++   /*  85  0x55  */   "CNXT_STATUS_RECT_INCLUDES",
++   /*  86  0x56  */   "CNXT_STATUS_RECT_NO_OVERLAP",
++   /*  87  0x57  */   "CNXT_STATUS_RECT_OVERLAP",
++   /*  88  0x58  */   "CNXT_STATUS_RECT_ZERO_AREA",
++   /*  89  0x59  */   "CNXT_STATUS_SERVICE_LIST_NOT_READY",
++   /*  90  0x5A  */   "CNXT_STATUS_SERVICE_LIST_READY",
++   /*  91  0x5B  */   "CNXT_STATUS_STOPPED",
++   /*  92  0x5C  */   "CNXT_STATUS_SUSPENDED",
++   /*  93  0x5D  */   "CNXT_STATUS_TERMINATED",
++   /*  94  0x5E  */   "CNXT_STATUS_TOO_MUCH_DATA",
++   /*  95  0x5F  */   "CNXT_STATUS_WIPE_NONE",
++   /*  96  0x60  */   "CNXT_STATUS_NOT_STOPPED",
++   /*  97  0x61  */   "CNXT_STATUS_INT_NOT_COMPLETE",
++   /*  98  0x62  */   "CNXT_STATUS_NOT_ALLOWED",
++   /*  99  0x63  */   "CNXT_STATUS_DUPLICATE_PID",
++   /* 100  0x64  */   "CNXT_STATUS_MAX_FILTERS_ATTACHED",
++   /* 101  0x65  */   "CNXT_STATUS_HW_NOT_READY",
++   /* 102  0x66  */   "CNXT_STATUS_OUTPUT_BUF_FULL",
++   /* 103  0x67  */   "CNXT_STATUS_REJECTED",
++   /* 104  0X68  */   "CNXT_STATUS_INVALID_PID",
++   /* 105  0x69  */   "CNXT_STATUS_EOF",
++   /* 106  0x6A  */   "CNXT_STATUS_BOF",
++   /* 107  0x6B  */   "CNXT_STATUS_MISSING_DATA",
++   /* 108  0x6C  */   "CNXT_STATUS_PM_ACK",
++   /* 109  0x6D  */   "CNXT_STATUS_PM_NAK",
++   /* 110  0x6E  */   "CNXT_STATUS_PM_ACCEPTED",
++   /* 111  0x6F  */   "CNXT_STATUS_PM_REJECTED",
++   /* 112  0x70  */   "CNXT_STATUS_PM_PENDING"
+ };
+ 
+ #define check_error(label, ret) 					\
+ { 									\
+         if(ret != 0) { 							\
+-		if (ret > 107) { 					\
++		if (ret > sizeof(cnxt_status)/sizeof(char*)-1) { 					\
+ 		        cs_log("[%s:%d] %s: API ERROR %d (UNKNOWN)",	\
+ 			__FUNCTION__, __LINE__ ,			\
+ 			label, ret);					\
+Index: oscam.c
+===================================================================
+--- oscam.c	(revision 6573)
++++ oscam.c	(working copy)
+@@ -987,7 +987,7 @@
+ 		if (unlink(targetfile) < 0)
+ 			cs_log("cannot remove oscam version file %s (errno=%d %s)", targetfile, errno, strerror(errno));
+ #endif
+-#ifdef COOL
++#if defined(COOL) || defined(SU980)
+ 		coolapi_close_all();
+ #endif
+   }
+@@ -1182,7 +1182,7 @@
+   cs_lock_create(&ecmcache_lock, 5, "ecmcache_lock");
+   cs_lock_create(&readdir_lock, 5, "readdir_lock");
+ 
+-#ifdef COOL
++#if defined(COOL) || defined(SU980) 
+   coolapi_open_all();
+ #endif
+ }
+@@ -4585,7 +4585,7 @@
+   init_signal_pre(); // because log could cause SIGPIPE errors, init a signal handler first
+   init_first_client();
+   init_config();
+-  init_check();
++  //init_check();
+ #ifdef WITH_LB
+   init_stat();
+ #endif
+Index: oscam-config.h
+===================================================================
+--- oscam-config.h	(revision 6573)
++++ oscam-config.h	(working copy)
+@@ -219,4 +219,6 @@
+ //#ifdef ALIGNMENT
+ //#  define STRUCTS_PACKED
+ //#endif
++
++#define SU980
+ #endif //OSCAM_CONFIG_H_
+Index: reader-common.c
+===================================================================
+--- reader-common.c	(revision 6573)
++++ reader-common.c	(working copy)
+@@ -6,7 +6,7 @@
+ #ifdef AZBOX
+ #include "csctapi/ifd_azbox.h"
+ #endif
+-#ifdef COOL
++#if defined(COOL) ||defined(SU980)
+ #include "csctapi/ifd_cool.h"
+ #endif
+ 
+@@ -312,7 +312,7 @@
+ 			MCR_DisplayText(reader, text, 5, 400, 0);
+ 		}
+ 
+-#ifdef COOL
++#if defined(COOL) ||defined(SU980)
+ 	if (reader->typ == R_INTERNAL) {
+ 		cs_debug_mask(D_DEVICE,"%s init done - modifying timeout for coolstream internal device %s", reader->label, reader->device);
+ 		call(Cool_Set_Transmit_Timeout(reader, 1));
+Index: csctapi/icc_async.c
+===================================================================
+--- csctapi/icc_async.c	(revision 6573)
++++ csctapi/icc_async.c	(working copy)
+@@ -152,7 +152,7 @@
+ 			return ERROR;
+ #endif
+ 		case R_INTERNAL:
+-#if defined(COOL)
++#if defined(COOL) ||defined(SU980)
+ 			return Cool_Init(reader);
+ #elif defined(AZBOX)
+ 			return Azbox_Init(reader);
+@@ -275,7 +275,7 @@
+ 		case R_INTERNAL:
+ #if defined(SCI_DEV)
+ 			call (Sci_GetStatus(reader, &in));
+-#elif defined(COOL)
++#elif defined(COOL) ||defined(SU980)
+ 			call (Cool_GetStatus(reader, &in));
+ #elif defined(WITH_STAPI)
+ 			call (STReader_GetStatus(reader->stsmart_handle, &in));
+@@ -345,7 +345,7 @@
+ #if defined(SCI_DEV)
+ 				call (Sci_Activate(reader));
+ 				call (Sci_Reset(reader, atr));
+-#elif defined(COOL)
++#elif defined(COOL) ||defined(SU980)
+ 				if ( ! reader->ins7e11_fast_reset) {
+ 					call (Cool_Reset(reader, atr));
+ 				}
+@@ -516,7 +516,7 @@
+ 			break;
+ #endif
+ 		case R_INTERNAL:
+-#if defined(COOL)
++#if defined(COOL) ||defined(SU980)
+ 			call (Cool_Transmit(reader, sent, size));
+ #elif defined(AZBOX)
+ 			call (Azbox_Transmit(reader, sent, size));
+@@ -564,7 +564,7 @@
+ 			break;
+ #endif
+ 		case R_INTERNAL:
+-#if defined(COOL)
++#if defined(COOL) ||defined(SU980)
+ 			call (Cool_Receive(reader, data, size));
+ #elif defined(AZBOX)
+ 			call (Azbox_Receive(reader, data, size));
+@@ -625,7 +625,7 @@
+ 			call (Phoenix_Close(reader));
+ #elif defined(WITH_STAPI)
+ 			call(STReader_Close(reader->stsmart_handle));
+-#elif defined(COOL)
++#elif defined(COOL) ||defined(SU980)
+ 			call (Cool_Close(reader));
+ #elif defined(AZBOX)
+ 			call (Azbox_Close(reader));
+@@ -924,7 +924,7 @@
+ 		return OK;
+ 	}
+ 
+-#if defined(COOL) || defined(WITH_STAPI) || defined(AZBOX)
++#if defined(COOL) ||defined(SU980) || defined(WITH_STAPI) || defined(AZBOX)
+ 	if (reader->typ != R_INTERNAL)
+ #endif
+ #if defined(LIBUSB)
+@@ -942,6 +942,7 @@
+ 	uint32_t GT;
+ 	uint32_t gt_ms;
+ 
++        cs_debug_mask(D_IFD, "InitCard Fi, d, n, deprecated = %d, %f, %d, %d\n", FI, d, n, deprecated);
+ 	//set the amps and the volts according to ATR
+ 	if (ATR_GetParameter(atr, ATR_PARAMETER_I, &I) != ATR_OK)
+ 		I = 0;
+@@ -985,6 +986,7 @@
+ 	else
+ 		EGT = n;
+ 	GT = EGT + 12; //Guard Time in ETU
++	CGT = GT;
+ 	gt_ms = ETU_to_ms(reader, GT);
+ 
+ 	switch (reader->protocol_type) {
+@@ -1003,6 +1005,7 @@
+ 			if (reader->protocol_type == ATR_PROTOCOL_TYPE_T14)
+ 				WWT >>= 1; //is this correct?
+ 
++                           reader->CWT = WWT; //Archer: I think it should be 960*wi*Di accroding to ISO7816-3 10.2
+ 			reader->read_timeout = ETU_to_ms(reader, WWT);
+ 			reader->block_delay = gt_ms;
+ 			reader->char_delay = gt_ms;
+@@ -1101,8 +1104,10 @@
+ 		if (!(atr->hbn >= 6 && !memcmp(atr->hb, "IRDETO", 6) && reader->protocol_type == ATR_PROTOCOL_TYPE_T14))
+ 			ETU = F / d;
+ 		call (Sci_WriteSettings (reader, reader->protocol_type, reader->mhz / 100, ETU, WWT, reader->BWT, reader->CWT, EGT, 5, (unsigned char)I)); //P fixed at 5V since this is default class A card, and TB is deprecated
+-#elif defined(COOL)
++#elif defined(COOL) 
+ 		call (Cool_WriteSettings (reader, reader->BWT, reader->CWT, EGT, BGT));
++#elif defined(SU980)
++		call (Cool_WriteSettings (reader, reader->BWT, reader->CWT, CGT, BGT, (uint16_t) atr_f_table[FI], (uint8_t)d));
+ #elif defined(WITH_STAPI)
+ 		call (STReader_SetClockrate(reader->stsmart_handle));
+ #endif //COOL
+Index: csctapi/ifd_cool.c
+===================================================================
+--- csctapi/ifd_cool.c	(revision 6573)
++++ csctapi/ifd_cool.c	(working copy)
+@@ -1,6 +1,6 @@
+ #include"../globals.h"
+ #ifdef WITH_CARDREADER
+-#ifdef COOL
++#if defined(COOL) ||defined(SU980)
+ /*
+ 		ifd_cool.c
+ 		This module provides IFD handling functions for Coolstream internal reader.
+@@ -30,6 +30,9 @@
+ {
+ 	char *device = reader->device;
+ 	int32_t reader_nb = 0;
++	int ret = 0;
++
++	cs_debug_mask(D_DEVICE,"cool init %s\n", device);
+ 	// this is to stay compatible with older config.
+ 	if(strlen(device))
+ 		reader_nb=atoi((const char *)device);
+@@ -39,10 +42,13 @@
+ 		return FALSE;
+ 	}
+ 	reader->spec_dev=malloc(sizeof(struct s_coolstream_reader));
+-	if (cnxt_smc_open (&specdev()->handle, &reader_nb, NULL, NULL))
+-		return FALSE;
++	call(cnxt_smc_open (&specdev()->handle, &reader_nb, NULL, NULL));
+ 
+-	int32_t ret = cnxt_smc_enable_flow_control(specdev()->handle);
++#if defined(COOL)
++	ret = cnxt_smc_enable_flow_control(specdev()->handle);
++#elif defined(SU980)
++	ret = cnxt_smc_enable_flow_control(specdev()->handle, TRUE);
++#endif
+ 	check_error("cnxt_smc_enable_flow_control", ret);
+ 
+ 	specdev()->cardbuflen = 0;
+@@ -91,7 +97,7 @@
+ 	} 
+ 
+ 	//reset card
+-	ret = cnxt_smc_reset_card (specdev()->handle, ATR_TIMEOUT, NULL, NULL);
++	ret = cnxt_smc_reset_card (specdev()->handle, ATR_TIMEOUT, FALSE, NULL);
+ 	check_error("cnxt_smc_reset_card", ret);
+ 	cs_sleepms(50);
+ 	int32_t n = 40;
+@@ -161,11 +167,14 @@
+ 	clk = mhz * 10000;
+ 	int32_t ret = cnxt_smc_set_clock_freq (specdev()->handle, clk);
+ 	check_error("cnxt_smc_set_clock_freq", ret);
++	#ifdef COOL
+ 	call (Cool_FastReset(reader));
++	#endif
+ 	cs_debug_mask(D_DEVICE, "COOL: %s clock succesfully set to %i",reader->label, clk);
+ 	return OK;
+ }
+ 
++#if defined(COOL)
+ int32_t Cool_WriteSettings (struct s_reader *reader, uint32_t BWT, uint32_t CWT, uint32_t EGT, uint32_t BGT)
+ {
+ 	//this code worked with old cnxt_lnx.ko, but prevented nagra cards from working with new cnxt_lnx.ko
+@@ -198,7 +207,66 @@
+ 
+ 	return OK;
+ }
++#elif defined(SU980)
++int32_t Cool_WriteSettings (struct s_reader *reader, uint32_t BWT, uint32_t CWT, uint32_t CGT, uint32_t BGT, uint16_t F, uint8_t D)
++{
++#if 0 /*It works without setting timeout for conax card. Maybe needed by other smart card in the future*/
++    struct
++    {
++       /* the card activation time in clock cycles (1/54MHz) */
++       unsigned short  uCardActTime;
++       /* the card deactivation time in clock cycles (1/54MHz) */
++       unsigned short  uCardDeactTime;
++       /* the max time in Smart Card clock cycles (1/f) for the */
++       /* first character of ATR reception */
++       unsigned short  uATRSTime;
++       /* the max duration of ATR character stream in ETUs */
++       unsigned short  uATRDTime;
++       /* the max time for receipt of first character of data stream in ETUs */
++       unsigned long  uBLKTime;
++       /* the max time allowed between characters in ETUs */
++       unsigned long  uCHTime;
++       /* the extra guard time added between two consecutive characters in ETUs */
++       unsigned char   uCHGuardTime;
++       /* the min time between the leading edges of two characters sent */
++       /* in opposite direction in ETUs */
++       unsigned char   uBKGuardTime;
++    }params;
+ 
++    call(cnxt_smc_get_config_timeout(specdev()->handle, &params));
++    cs_debug_mask(D_DEVICE, "Cool_WriteSettings(get):\
++        uCardActTime=%d, uCardDeactTime=%d, uATRSTime=%d, uATRDTime=%d,\
++        uBLKTime=%d, uCHTime=%d, uCHGuardTime=%d, uBKGuardTime=%d\n",\
++        params.uCardDeactTime, params.uCardDeactTime, params.uATRSTime, params.uATRDTime, \
++        params.uBLKTime, params.uCHTime, params.uCHGuardTime, params.uBKGuardTime);
++
++    params.uBLKTime = BWT;
++    params.uBKGuardTime = BGT;
++    params.uCHTime = CWT;
++    params.uCHGuardTime = CGT;
++    cs_debug_mask(D_DEVICE, "Cool_WriteSettings(set):\
++        uCardActTime=%d, uCardDeactTime=%d, uATRSTime=%d, uATRDTime=%d,\
++        uBLKTime=%d, uCHTime=%d, uCHGuardTime=%d, uBKGuardTime=%d\n",\
++        params.uCardDeactTime, params.uCardDeactTime, params.uATRSTime, params.uATRDTime, \
++        params.uBLKTime, params.uCHTime, params.uCHGuardTime, params.uBKGuardTime);
++    call(cnxt_smc_set_config_timeout(specdev()->handle, params));
++#endif    
++    cs_debug_mask(D_DEVICE,"Cool_WriteSettings F:%d, D:%d\n", F, D);
++    call(cnxt_smc_set_F_D_factors(specdev()->handle, F, D));
++
++    //set freq back to reader->mhz if necessary
++    uint32_t clk;
++    int32_t ret = cnxt_smc_get_clock_freq (specdev()->handle, &clk);
++    check_error("cnxt_smc_get_clock_freq", ret);
++    if (clk/10000 != reader->mhz) {
++        cs_debug_mask(D_DEVICE,"COOL: %s clock freq: %i, scheduling change to %i", reader->label, clk, reader->mhz*10000);
++        call (Cool_SetClockrate(reader, reader->mhz));
++    } 
++    
++    return OK;
++}
++#endif
++
+ int32_t Cool_FastReset (struct s_reader *reader)
+ {
+ 	int32_t n = 40, ret;
+Index: csctapi/ifd_cool.h
+===================================================================
+--- csctapi/ifd_cool.h	(revision 6573)
++++ csctapi/ifd_cool.h	(working copy)
+@@ -2,7 +2,7 @@
+     ifd_cool.h
+     Header file for Coolstream internal reader.
+ */
+-#ifdef COOL
++#if defined(COOL) ||defined(SU980)
+ 
+ #include "atr.h"
+ int32_t Cool_Init (struct s_reader *reader);
+@@ -14,7 +14,11 @@
+ int32_t Cool_FastReset (struct s_reader *reader);
+ int32_t Cool_FastReset_With_ATR (struct s_reader *reader, ATR * atr);
+ int32_t Cool_GetStatus (struct s_reader *reader, int32_t * in);
++#if defined(COOL)
+ int32_t Cool_WriteSettings (struct s_reader *reader, uint32_t BWT, uint32_t CWT, uint32_t EGT, uint32_t BGT);
++#elif defined(SU980)
++int32_t Cool_WriteSettings (struct s_reader *reader, uint32_t BWT, uint32_t CWT, uint32_t CGT, uint32_t BGT, uint16_t F, uint8_t D);
++#endif
+ int32_t Cool_Close (struct s_reader *reader);
+ void * handle;
+ #endif
+Index: CMakeLists.txt
+===================================================================
+--- CMakeLists.txt	(revision 6573)
++++ CMakeLists.txt	(working copy)
+@@ -1,5 +1,4 @@
+ project (OSCam C)
+-
+ #----------------------- minimum version of cmake to use ------------
+ 
+ # if you want to switch to 2.6 min, please look at the escaped definitions
+@@ -446,7 +445,7 @@
+ 
+ set (exe_name "oscam")
+ add_executable (${exe_name} ${exe_srcs} ${exe_hdrs})
+-target_link_libraries (${exe_name} ${csoscam} ${csmodules} ${csreaders} csctapi cscrypt algo)
++target_link_libraries (${exe_name} ${csoscam} ${csmodules} ${csreaders} csctapi cscrypt algo liblnxcssUsr_g.a liblnxUKAL_g.a libtmplatHandle_g.a librt.so liblnxplatUsr_g.a liblnxscsUsr_g.a liblnxnotifyqUsr_g.a)
+ if(HAVE_LIBRT AND HAVE_LIBUSB)
+     target_link_libraries (${exe_name} imp_libusb)
+     if (NOT OSCamOperatingSystem MATCHES "Mac OS X")
+Index: reader-videoguard2.c
+===================================================================
+--- reader-videoguard2.c	(revision 6573)
++++ reader-videoguard2.c	(working copy)
+@@ -543,7 +543,7 @@
+         if (TA1 != reader->ins7E11[0x00]) {
+           cs_log("classD0 ins7E11: Scheduling card reset for TA1 change from %02X to %02X", TA1, reader->ins7E11[0x00]);
+           reader->ins7e11_fast_reset = 1;
+-#ifdef COOL
++#if defined(COOL) ||defined(SU980)
+           if (reader->typ == R_MOUSE || reader->typ == R_SC8in1 || reader->typ == R_SMART || reader->typ == R_INTERNAL) {
+ #else
+           if (reader->typ == R_MOUSE || reader->typ == R_SC8in1 || reader->typ == R_SMART ) {
+Index: globals.h
+===================================================================
+--- globals.h	(revision 6573)
++++ globals.h	(working copy)
+@@ -1088,7 +1088,7 @@
+ 	int8_t			cacheex;
+ #endif
+ 	int32_t			typ;
+-#ifdef COOL
++#if defined(COOL) ||defined(SU980)
+ 	int32_t			cool_timeout_init; // read/transmit timeout while init for coolstream internal reader
+ 	int32_t			cool_timeout_after_init; // read/transmit timeout after init for coolstream internal reader
+ #endif

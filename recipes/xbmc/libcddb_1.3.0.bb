@@ -13,7 +13,7 @@ SRC_URI = " \
 	file://${P}-asneeded-nonglibc.patch \
 	"
 
-inherit autotools pkgconfig
+inherit autotools pkgconfig gettext
 
 SRC_URI[md5sum] = "e4a7f9579956c32b7f300eb12e9ea6df"
 SRC_URI[sha256sum] = "4e7d3aae339cf5037d972cd5f3ab23a3b643f6b05e4125430da4f22682770bf9"

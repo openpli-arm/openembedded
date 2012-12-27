@@ -58,7 +58,7 @@ python populate_packages_prepend () {
 }
 
 do_install_append() {
-	rm ${D}/usr/lib/enigma2/python/Plugins/PLi/PPanel/url.py
+	rm -f ${D}/usr/lib/enigma2/python/Plugins/PLi/PPanel/url.py
 	find ${D}/usr/lib/enigma2/python/ -name '*.pyc' -exec rm {} \;
 }
 

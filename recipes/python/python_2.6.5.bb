@@ -14,6 +14,7 @@ SRC_URI = "\
   file://04-default-is-optimized.patch \
   file://05-enable-ctypes-cross-build.patch \
   file://06-ctypes-libffi-fix-configure.patch \
+  file://07-linux3-regen-fix.patch \
   file://99-ignore-optimization-flag.patch \
   file://sitecustomize.py \
 "

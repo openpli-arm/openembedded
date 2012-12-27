@@ -6,12 +6,14 @@ ANGSTROM_EXTRA_INSTALL ?= ""
 
 ZZAPSPLASH = ' ${@base_contains("MACHINE_FEATURES", "screen", "psplash-zap", "",d)}'
 
-DEPENDS = "task-base \
+# task-base \
+DEPENDS = " \
            ${SPLASH} \
            ${ZZAPSPLASH} \
 	   "
 
-IMAGE_INSTALL = "task-base \
+# task-base \
+IMAGE_INSTALL = " \
 	    ${ANGSTROM_EXTRA_INSTALL} \
 	    ${SPLASH} \
 	    ${ZZAPSPLASH} \

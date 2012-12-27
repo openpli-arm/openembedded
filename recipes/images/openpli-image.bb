@@ -3,8 +3,9 @@ IMAGE_PREPROCESS_COMMAND = "create_etc_timestamp"
 
 BOOTLOGO ?= "openpli-bootlogo"
 
-IMAGE_INSTALL = " \
-				task-base \
+# task-base
+
+IMAGE_INSTALL = "task-base\
 				netkit-base \
 				vsftpd \
 				util-linux-ng-sfdisk \
@@ -20,8 +21,8 @@ IMAGE_INSTALL = " \
 				e2fsprogs-e2fsck \
 				nfs-utils-client \
 				kernel-params \
+				gst-plugin-dvbmediasink \
 				"
-
 OPTIONAL_PACKAGES ?= ""
 OPTIONAL_PACKAGES += " \
 			openvpn \
