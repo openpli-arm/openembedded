@@ -61,6 +61,8 @@ IMAGE_INSTALL += " \
 				settings-autorestore \
 				libstdc++\
 				oscam-stable\
+				dvb-apps\
+				ntfs-3g\
 				"
 
 OPTIONAL_PACKAGES += " \
