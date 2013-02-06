@@ -6,7 +6,7 @@ MAINTAINER = "Archer Zhao <archer.zhao@sen5.com>"
 PV = '20121023'
 PR = '1'
 
-SRC_URI = "http://192.168.0.218/download/tools/su980-ca-test-${PV}.tar.gz"
+SRC_URI = "https://www.dropbox.com/s/fuetif84w0pqez9/su980-ca-test-${PV}.tar.gz"
 
 FILES_${PN} = "${bindir}/*"
 

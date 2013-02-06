@@ -8,7 +8,7 @@ PR = "r1"
 
 SRCREV_pn-${PN} = "${AUTOREV}"
 
-SRC_URI = "git://192.168.0.218:3121/opt/git/openpli/dvb-apps.git;protocol=ssh;user=git;branch=master"
+SRC_URI = "https://github.com/openpli-arm/dvb-apps.git;protocol=git;branch=master"
 
 S = "${WORKDIR}/git"
 

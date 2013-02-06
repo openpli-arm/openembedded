@@ -106,19 +106,19 @@ POPULATE_ANDROID = "\
 MACHINE_POSTPROCESS_COMMAND = "\
 	cd ${DL_DIR};\
 	if [ ! -e ${UPGRADE_SCRIPT_NAME}.scr ];then\
-		wget http://192.168.0.218/download/images/bootloader/${UPGRADE_SCRIPT_NAME}.scr;\
+		wget https://www.dropbox.com/s/46iqcdwfqgf1dje/${UPGRADE_SCRIPT_NAME}.scr;\
 	fi;\
 	if [ ! -e ${BOOT_NAME}.bin ];then\
-		wget http://192.168.0.218/download/images/bootloader/${BOOT_NAME}.bin;\
+		wget https://www.dropbox.com/s/cc6743k4g05r38d/${BOOT_NAME}.bin;\
 	fi;\
 	if [ ! -e ${LOADER_NAME}.bin ];then\
-		wget http://192.168.0.218/download/images/bootloader/${LOADER_NAME}.bin;\
+		wget https://www.dropbox.com/s/lakw3zad1m0m9d8/${LOADER_NAME}.bin;\
 	fi;\
 	if [ ! -e ${E2_KERNEL_NAME}.bin ];then\
-		wget http://192.168.0.218/download/images/e2/${E2_KERNEL_NAME}.bin;\
+		wget https://www.dropbox.com/s/hzfo8rz12g00kq6/${E2_KERNEL_NAME}.bin;\
 	fi;\
 	if [ ! -e ${ANDROID_FILE_NAME}.tar.gz ];then\
-		wget http://192.168.0.218/download/images/android/${ANDROID_FILE_NAME}.tar.gz;\
+		wget https://www.dropbox.com/s/d7osel4b43qw79u/${ANDROID_FILE_NAME}.tar.gz;\
 	fi;\
 	cd ${DEPLOY_DIR_IMAGE};\
 	rm -rf release;\

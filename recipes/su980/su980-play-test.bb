@@ -3,10 +3,10 @@ SECTION = "base"
 LICENSE = "proprietary"
 MAINTAINER = "Archer Zhao <archer.zhao@sen5.com>"
 
-PV = '20121022'
+PV = '20130124'
 PR = '2'
 
-SRC_URI = "http://192.168.0.218/download/tools/su980-play-test-${PV}.tar.gz"
+SRC_URI = "https://www.dropbox.com/s/3vs09usu1kge919/su980-play-test-${PV}.tar.gz"
 
 FILES_${PN} = "${bindir}/*"
 

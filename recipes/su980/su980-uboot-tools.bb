@@ -5,7 +5,7 @@ MAINTAINER = "Archer Zhao <archer.zhao@sen5.com>"
 
 PV = '20120615'
 
-SRC_URI = "http://192.168.0.218/download/tools/su980-uboot-tools-${PV}.tar.gz"
+SRC_URI = "https://www.dropbox.com/s/a36f3nczbrr6xqy/su980-uboot-tools-${PV}.tar.gz"
 
 FILES_${PN} = "${bindir}/*"
 
