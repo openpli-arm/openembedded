@@ -13,7 +13,7 @@ PR = "r1"
 BRANCH = "master"
 
 SRC_URI = "git://schwerkraft.elitedvb.net/enigma2-skins/enigma2-skins.git;protocol=git;branch=${BRANCH}"
-SRC_URI_arm = "https://github.com/openpli-arm/enigma2-skins.git;protocol=git;branch=${BRANCH}"
+SRC_URI_arm = "git://github.com/openpli-arm/enigma2-skins.git;protocol=git;branch=${BRANCH}"
 
 #include examples of openpli widgets
 SRC_URI_append = " \
