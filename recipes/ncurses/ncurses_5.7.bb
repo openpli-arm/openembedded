@@ -12,9 +12,9 @@ DEPENDS_virtclass-native = "unifdef-native"
 inherit autotools binconfig test
 
 SRC_URI = "${GNU_MIRROR}/ncurses/ncurses-${PV}.tar.gz;name=tarball \
-        ftp://invisible-island.net/ncurses/5.7/ncurses-5.7-20110108-patch.sh.bz2;apply=yes;name=p20110108sh \
+        https://www.dropbox.com/s/n2nwp6lqbhqz9qa/ncurses-5.7-20110108-patch.sh.bz2;apply=yes;name=p20110108sh \
 \
-        ftp://invisible-island.net/ncurses/5.7/ncurses-5.7-${PATCHDATE}.patch.gz;name=p${PATCHDATE} \
+        https://www.dropbox.com/s/0ofmhlt3iyganvf/ncurses-5.7-20110115.patch.gz;name=p${PATCHDATE} \
         file://tic-hang.patch \
         file://config.cache \
 "

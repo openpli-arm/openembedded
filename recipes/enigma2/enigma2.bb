@@ -98,7 +98,7 @@ PR = "r26"
 
 #SRC_URI format for git use ssh protocol
 #git://host:port/path/to/repo.git;branch=win;protocol=ssh;user=username
-SRC_URI = "git://github.com/openpli-arm/enigma2-skins.git;protocol=git;branch=master"
+SRC_URI = "git://github.com/openpli-arm/enigma2-arm.git;protocol=git;branch=master"
 # SRC_URI = "git://${HOME}/pli/enigma2;protocol=file"
 
 S = "${WORKDIR}/git"

@@ -5,7 +5,7 @@ LICENSE = "GPL"
 PR = "r2"
 
 SRC_URI = "\
-  ${DEBIAN_MIRROR}/main/f/fakeroot/fakeroot_${PV}.tar.gz \
+  http://www.openpandora.org/firmware/sources/fakeroot_${PV}.tar.gz \
   file://configure-libtool.patch \
 "
 	    

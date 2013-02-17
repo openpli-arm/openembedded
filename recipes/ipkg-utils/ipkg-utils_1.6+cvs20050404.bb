@@ -9,7 +9,7 @@ PR = "r27"
 
 TARGET_CC_ARCH += "${LDFLAGS}"
 
-SRC_URI = "${HANDHELDS_CVS};module=ipkg-utils \
+SRC_URI = "https://www.dropbox.com/s/cf7vdi9hcyss2f7/ipkg-utils_anoncvs.handhelds.org__20050930.tar.gz \
            file://ipkg-utils-fix.patch \
            file://ipkg-py-sane-vercompare.patch \
            file://ipkg-py-tarfile.patch \

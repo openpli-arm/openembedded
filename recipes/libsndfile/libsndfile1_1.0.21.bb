@@ -7,6 +7,7 @@ DEPENDS = "sqlite3"
 PR = "r1"
 
 SRC_URI = "http://www.mega-nerd.com/libsndfile/files/libsndfile-${PV}.tar.gz;name=libsndfile1021targz"
+SRC_URI = "http://pkgs.fedoraproject.org/repo/pkgs/libsndfile/libsndfile-1.0.21.tar.gz/880a40ec636ab2185b97f8927299b292/libsndfile-1.0.21.tar.gz;name=libsndfile1021targz"
 SRC_URI[libsndfile1021targz.md5sum] = "880a40ec636ab2185b97f8927299b292"
 SRC_URI[libsndfile1021targz.sha256sum] = "7e9083a2551ff347276d82cdb61f2b4f9cd137c0b76433800e991583ded8ea67"
 

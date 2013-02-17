@@ -4,7 +4,8 @@ LICENSE = "GPLv2"
 PR = "r1"
 
 SRC_URI = "\
-  ${DEBIAN_MIRROR}/main/b/base-passwd/base-passwd_${PV}.tar.gz \
+#  ${DEBIAN_MIRROR}/main/b/base-passwd/base-passwd_${PV}.tar.gz \
+  http://ftp.acc.umu.se/mirror/cdimage/snapshot/Debian/pool/main/b/base-passwd/base-passwd_${PV}.tar.gz \
   file://nobash.patch \
   file://root-home.patch \
   file://mysql.patch \
