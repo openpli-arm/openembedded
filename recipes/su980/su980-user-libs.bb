@@ -3,9 +3,9 @@ SECTION = "base"
 LICENSE = "proprietary"
 MAINTAINER = "Archer Zhao <archer.zhao@sen5.com>"
 
-PV = '20121114'
+PV = '20130221'
 
-SRC_URI = "https://www.dropbox.com/s/d1y2zxlrspg6a2d/su980-user-libs-${PV}.tar.gz"
+SRC_URI = "https://www.dropbox.com/s/quuixa3yw1943wt/su980-user-libs-${PV}.tar.gz"
 PROVIDES += "libciplus.so"
 
 FILES_${PN} = "${libdir}/*.so"
