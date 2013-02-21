@@ -37,7 +37,7 @@ do_generate_toolchain_file_append() {
 }
 
 do_generate_toolchain_file_arm() {
-	echo "set( OSCAM_SYSTEM_NAME senbox ) " > ${WORKDIR}/toolchain.cmake 
+	echo "set( OSCAM_SYSTEM_NAME SU980 ) " > ${WORKDIR}/toolchain.cmake 
 	echo "set( CMAKE_SYSTEM_NAME Linux ) " >> ${WORKDIR}/toolchain.cmake 
 	echo "set( CMAKE_C_COMPILER ${HOST_PREFIX}gcc ) " >> ${WORKDIR}/toolchain.cmake
 	echo "set( CMAKE_SYSTEM_PROCESSOR arm ) " >> ${WORKDIR}/toolchain.cmake
