@@ -29,7 +29,7 @@ ENIGMA2_PLUGINS = " \
 				${@base_contains("MACHINE_FEATURES", "wifi", "enigma2-plugin-systemplugins-wirelesslan", "", d)} \
 				"
 #Archer:Add oscam plugin in openpli image 
-ENIGMA2_PLUGINS_append_arm = "enigma2-plugin-softcams-oscam-stable su980-uboot-tools"
+ENIGMA2_PLUGINS_append_arm = "enigma2-plugin-softcams-oscam-stable enigma2-plugin-softcams-oscam-experimental su980-uboot-tools"
 DEPENDS += "enigma2 enigma2-plugins enigma2-pliplugins"
 
 ENIGMA2_OPTIONAL = " \
@@ -61,6 +61,7 @@ IMAGE_INSTALL += " \
 				settings-autorestore \
 				libstdc++\
 				oscam-stable\
+				oscam-experimental\
 				dvb-apps\
 				ntfs-3g\
 				"
