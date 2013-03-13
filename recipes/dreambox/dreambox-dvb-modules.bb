@@ -24,7 +24,7 @@ KV_dm800 = "${@base_contains('PREFERRED_VERSION_linux-dm800', '2.6.18', '2.6.18-
 PV_dm800 = "${KV}-${@base_contains('PREFERRED_VERSION_linux-dm800', '2.6.18', '20110302', '20090723', d)}"
 
 KV_dm800_arm = '2.6.34'
-PV_dm800_arm = '20130301'
+PV_dm800_arm = '20130313'
 
 KV_dm800se = "2.6.18-7.4-dm800se"
 PV_dm800se = "${KV}-20110302"
@@ -55,7 +55,7 @@ SRC_URI = "http://sources.dreamboxupdate.com/snapshots/dreambox-dvb-modules-${MA
 			${@base_contains("MACHINE_FEATURES", "frontprocessor", "http://sources.dreamboxupdate.com/download/7020/fpupgrade-${MACHINE}-v7", "", d)} \
 			"
 
-SRC_URI_arm = "https://www.dropbox.com/s/zt22dszxpbk7s4e/su980-dvb-modules-${PV}.tar.gz"
+SRC_URI_arm = "https://www.dropbox.com/s/0zw7xrytj4mp9x2/su980-dvb-modules-${PV}.tar.gz"
 FILES_${PN}_append_arm = " ${base_libdir}/firmware/* ${sysconfdir}/modprobe.d/vpmfbDrv.conf"
 S = "${WORKDIR}"
 
