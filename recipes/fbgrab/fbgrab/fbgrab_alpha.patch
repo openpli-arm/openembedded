@@ -1,0 +1,28 @@
+diff -Naur fbgrab-1.0/fbgrab.c fbgrab-1.0.1/fbgrab.c
+--- fbgrab-1.0/fbgrab.c	2013-03-13 10:09:45.440355061 +0800
++++ fbgrab-1.0.1/fbgrab.c	2013-03-13 09:45:13.000000000 +0800
+@@ -234,7 +234,8 @@
+ static void write_PNG(unsigned char *outbuffer, char *filename, 
+ 				int width, int height, int interlace)
+ {
+-    int i;
++    int i,j;
++    unsigned char *line;
+     int bit_depth=0, color_type;
+     png_bytep row_pointers[height];
+     png_structp png_ptr;
+@@ -242,8 +243,12 @@
+     FILE *outfile = fopen(filename, "wb");
+ 
+     for (i=0; i<height; i++)
+-	row_pointers[i] = outbuffer + i * 4 * width;
+-    
++    {
++        row_pointers[i] = outbuffer + i * 4 * width;
++        line = outbuffer + i * 4 * width;
++        for(j=0;j<width;j++)
++            *(line+j*4+3) = 0x00;
++    }
+     if (!outfile)
+     {
+ 	fprintf (stderr, "Error: Couldn't fopen %s.\n", filename);

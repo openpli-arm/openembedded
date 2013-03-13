@@ -11,6 +11,7 @@ SRC_URI = "http://hem.bredband.net/gmogmo/fbgrab/fbgrab-${PV}.tar.gz;name=archiv
 	   http://people.openezx.org/ao2/fbgrab_network_mode.diff;name=patch \
 	   file://fbgrab_1bpp.patch \
 	   "
+SRC_URI_append_arm = "file://fbgrab_alpha.patch "
 
 do_install() {
 	install -d ${D}${bindir} ${D}${mandir}/man1/
