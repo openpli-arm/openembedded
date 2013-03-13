@@ -119,7 +119,7 @@ MACHINE_POSTPROCESS_COMMAND = "\
 		wget https://www.dropbox.com/s/hzfo8rz12g00kq6/${E2_KERNEL_NAME}.bin;\
 	fi;\
 	if [ ! -e ${ANDROID_FILE_NAME}.tar.gz ];then\
-		wget https://www.dropbox.com/s/d7osel4b43qw79u/${ANDROID_FILE_NAME}.tar.gz;\
+		wget https://www.dropbox.com/s/6xec1z2jir8ymoj/${ANDROID_FILE_NAME}.tar.gz;\
 	fi;\
 	cd ${DEPLOY_DIR_IMAGE};\
 	rm -rf release;\
