@@ -1,0 +1,35 @@
+diff -Naur enigma2-streamproxy.org/src/streamproxy.c enigma2-streamproxy/src/streamproxy.c
+--- enigma2-streamproxy.org/src/streamproxy.c	2013-03-28 15:14:33.000000000 +0800
++++ enigma2-streamproxy/src/streamproxy.c	2013-03-28 15:19:01.443001929 +0800
+@@ -106,17 +106,19 @@
+ 	snprintf(upstream_request, sizeof(upstream_request), "GET /web/stream?StreamService=%s HTTP/1.0\r\n%s\r\n", service_ref, authorization);
+ 	if (write(upstream, upstream_request, strlen(upstream_request)) != strlen(upstream_request))
+ 		goto bad_gateway;
+-	
++	int maxfd = 0;
+ 	while (1)
+ 	{
+ 		fd_set r;
+ 		FD_ZERO(&r);
+ 		FD_SET(upstream, &r);
++		maxfd = upstream;
+ 		FD_SET(0, &r);
+ 		if (demux_fd != -1)
+ 			FD_SET(demux_fd, &r);
+-		
+-		if (select(5, &r, 0, 0, 0) < 0)
++		if(demux_fd > maxfd)
++			maxfd = demux_fd;
++		if (select(maxfd+1, &r, 0, 0, 0) < 0)
+ 			break;
+ 
+ 		if (FD_ISSET(0, &r)) /* check for client disconnect */
+@@ -285,7 +287,7 @@
+ 							return 2;
+ 						}
+ 
+-						ioctl(demux_fd, DMX_SET_BUFFER_SIZE, 1024*1024);
++						ioctl(demux_fd, DMX_SET_BUFFER_SIZE, 8*188*1024);
+ 
+ 						flt.pid = active_pids[i];
+ 						flt.input = DMX_IN_FRONTEND;

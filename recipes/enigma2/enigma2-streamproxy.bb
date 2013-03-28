@@ -6,6 +6,7 @@ PR = "r1"
 
 SRC_URI = "cvs://anonymous@cvs.schwerkraft.elitedvb.net/cvsroot/streamproxy;module=enigma2-streamproxy;method=pserver \
 	file://streampatch.diff"
+SRC_URI_append_arm = " file://enigma2-streamproxy-fd.patch "
 
 inherit autotools
 
