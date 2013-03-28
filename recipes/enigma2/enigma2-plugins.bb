@@ -9,7 +9,10 @@ PV = "experimental-git${SRCPV}"
 PKGV = "experimental-git${GITPKGV}"
 PR = "r4"
 
+SRCREV_pn-${PN} = "748e04b7efa9cec11ce6283039649e8bb77001bd"
+
 SRC_URI="git://openpli.git.sourceforge.net/gitroot/openpli/plugins-enigma2;protocol=git"
+SRC_URI_append_arm = " file://plugins-enigma2-webinterface.patch"
 
 EXTRA_OECONF = " \
 	BUILD_SYS=${BUILD_SYS} \

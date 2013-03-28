@@ -1,0 +1,246 @@
+diff -Naur plugins-enigma2.orig/Makefile.am plugins-enigma2/Makefile.am
+--- plugins-enigma2.orig/Makefile.am	2013-03-28 10:43:26.160165496 +0800
++++ plugins-enigma2/Makefile.am	2013-03-28 11:24:40.539628824 +0800
+@@ -84,13 +84,13 @@
+ 	youtubeplayer \
+ 	zaphistorybrowser \
+ 	zapstatistic \
+-	zdfmediathek
++	zdfmediathek \
++	webinterface
+ 
+ if TPM
+ SUBDIRS += \
+ 	mytube \
+-	yttrailer \
+-	webinterface
++	yttrailer
+ endif
+ 
+ metadir = $(datadir)/meta
+diff -Naur plugins-enigma2.orig/webinterface/src/plugin.py plugins-enigma2/webinterface/src/plugin.py
+--- plugins-enigma2.orig/webinterface/src/plugin.py	2013-03-28 10:43:26.680165482 +0800
++++ plugins-enigma2/webinterface/src/plugin.py	2013-03-28 14:03:54.000000000 +0800
+@@ -60,10 +60,9 @@
+ #===============================================================================
+ class Closer:
+ 	counter = 0
+-	def __init__(self, session, callback=None, l2k=None):
++	def __init__(self, session, callback=None):
+ 		self.callback = callback
+ 		self.session = session
+-		self.l2k = l2k
+ #===============================================================================
+ # Closes all running Instances of the Webinterface
+ #===============================================================================
+@@ -81,8 +80,7 @@
+ 		running_defered = []
+ 		if self.counter < 1:
+ 			if self.callback is not None:
+-				self.callback(self.session, self.l2k)
+-
++				self.callback(self.session)
+ #===============================================================================
+ # #Is it already down?
+ #===============================================================================
+@@ -90,8 +88,7 @@
+ 		self.counter -= 1
+ 		if self.counter < 1:
+ 			if self.callback is not None:
+-				self.callback(self.session, self.l2k)
+-
++				self.callback(self.session)
+ def checkCertificates():
+ 	print "[WebInterface] checking for SSL Certificates"
+ 	srvcert = '%sserver.pem' %resolveFilename(SCOPE_CONFIG) 
+@@ -104,7 +101,7 @@
+ 	else:
+ 		return True
+ 		
+-def installCertificates(session, callback = None, l2k = None):
++def installCertificates(session, callback = None):
+ 	print "[WebInterface] Installing SSL Certificates to %s" %resolveFilename(SCOPE_CONFIG)
+ 	
+ 	srvcert = '%sserver.pem' %resolveFilename(SCOPE_CONFIG) 
+@@ -121,14 +118,14 @@
+ 		ret = copyfile(source, target)
+ 		
+ 		if ret == 0 and callback != None:
+-			callback(session, l2k)
++			callback(session)
+ 	
+ 	if ret < 0:
+ 		config.plugins.Webinterface.https.enabled.value = False
+ 		config.plugins.Webinterface.https.enabled.save()
+ 		
+ 		# Start without https
+-		callback(session, l2k)
++		callback(session)
+ 		
+ 		#Inform the user
+ 		session.open(MessageBox, "Couldn't install SSL-Certifactes for https access\nHttps access is now disabled!", MessageBox.TYPE_ERROR)
+@@ -136,7 +133,7 @@
+ #===============================================================================
+ # restart the Webinterface for all configured Interfaces
+ #===============================================================================
+-def restartWebserver(session, l2k):
++def restartWebserver(session):
+ 	try:
+ 		del session.mediaplayer
+ 		del session.messageboxanswer
+@@ -147,14 +144,14 @@
+ 
+ 	global running_defered
+ 	if len(running_defered) > 0:
+-		Closer(session, startWebserver, l2k).stop()
++		Closer(session, startWebserver).stop()
+ 	else:
+-		startWebserver(session, l2k)
++		startWebserver(session)
+ 	
+ #===============================================================================
+ # start the Webinterface for all configured Interfaces
+ #===============================================================================
+-def startWebserver(session, l2k):
++def startWebserver(session):
+ 	global running_defered
+ 	global toplevel
+ 	
+@@ -175,13 +172,13 @@
+ 		if config.plugins.Webinterface.https.enabled.value:
+ 			if not checkCertificates():
+ 				print "[Webinterface] Installing Webserver Certificates for SSL encryption"
+-				installCertificates(session, startWebserver, l2k)
++				installCertificates(session, startWebserver)
+ 				return
+ 		# Listen on all Interfaces
+ 		ip = "0.0.0.0"
+ 		#HTTP
+ 		if config.plugins.Webinterface.http.enabled.value is True:
+-			ret = startServerInstance(session, ip, config.plugins.Webinterface.http.port.value, config.plugins.Webinterface.http.auth.value, l2k)
++			ret = startServerInstance(session, ip, config.plugins.Webinterface.http.port.value, config.plugins.Webinterface.http.auth.value)
+ 			if ret == False:
+ 				errors = "%s%s:%i\n" %(errors, ip, config.plugins.Webinterface.http.port.value)
+ 			else:
+@@ -190,7 +187,7 @@
+ 		#Streaming requires listening on 127.0.0.1:80 no matter what, ensure it its available
+ 		if config.plugins.Webinterface.http.port.value != 80 or not config.plugins.Webinterface.http.enabled.value:
+ 			#LOCAL HTTP Connections (Streamproxy)
+-			ret = startServerInstance(session, '127.0.0.1', 80, config.plugins.Webinterface.http.auth.value, l2k)			
++			ret = startServerInstance(session, '127.0.0.1', 80, config.plugins.Webinterface.http.auth.value)			
+ 			if ret == False:
+ 				errors = "%s%s:%i\n" %(errors, '127.0.0.1', 80)
+ 			
+@@ -199,7 +196,7 @@
+ 				
+ 		#HTTPS		
+ 		if config.plugins.Webinterface.https.enabled.value is True:					
+-			ret = startServerInstance(session, ip, config.plugins.Webinterface.https.port.value, config.plugins.Webinterface.https.auth.value, l2k, True)
++			ret = startServerInstance(session, ip, config.plugins.Webinterface.https.port.value, config.plugins.Webinterface.https.auth.value, True)
+ 			if ret == False:
+ 				errors = "%s%s:%i\n" %(errors, ip, config.plugins.Webinterface.https.port.value)
+ 			else:
+@@ -226,31 +223,7 @@
+ # Starts an Instance of the Webinterface
+ # on given ipaddress, port, w/o auth, w/o ssl
+ #===============================================================================
+-def startServerInstance(session, ipaddress, port, useauth=False, l2k=None, usessl=False):
+-	if hw.get_device_name().lower() != "dm7025":
+-		l3k = None		
+-		l3c = tpm.getCert(eTPM.TPMD_DT_LEVEL3_CERT)
+-		
+-		if l3c is None:
+-			return False			
+-		
+-		l3k = validate_certificate(l3c, l2k)
+-		if l3k is None:			
+-			return False
+-		
+-		random = get_random()
+-		if random is None:
+-			return False
+-	
+-		value = tpm.challenge(random)
+-		result = decrypt_block(value, l3k)
+-		
+-		if result is None:
+-			return False
+-		else:
+-			if result [80:88] != random:		
+-				return False
+-		
++def startServerInstance(session, ipaddress, port, useauth=False, usessl=False):
+ 	if useauth:
+ # HTTPAuthResource handles the authentication for every Resource you want it to			
+ 		root = HTTPAuthResource(toplevel, "Enigma2 WebInterface")
+@@ -439,58 +412,24 @@
+ #===============================================================================
+ #def networkstart(reason, **kwargs):
+ def networkstart(reason, session):
+-	l2r = False
+-	l2k = None
+-	if hw.get_device_name().lower() != "dm7025":		
+-		l2c = tpm.getCert(eTPM.TPMD_DT_LEVEL2_CERT)
+-		
+-		if l2c is None:
+-			return
+-		
+-		l2k = validate_certificate(l2c, rootkey)
+-		if l2k is None:
+-			return
+-			
+-		l2r = True
+-	else:
+-		l2r = True
+-		
+-	if l2r:	
+-		if reason is True:
+-			startWebserver(session, l2k)
+-			checkBonjour()
+-			
+-		elif reason is False:
+-			stopWebserver(session)
+-			checkBonjour()
++	if reason is True:
++		startWebserver(session)
++		checkBonjour()
++		
++	elif reason is False:
++		stopWebserver(session)
++		checkBonjour()
+ 		
+ def openconfig(session, **kwargs):
+ 	session.openWithCallback(configCB, WebIfConfigScreen)
+ 
+ def configCB(result, session):
+-	l2r = False
+-	l2k = None
+-	if hw.get_device_name().lower() != "dm7025":		
+-		l2c = tpm.getCert(eTPM.TPMD_DT_LEVEL2_CERT)
+-		
+-		if l2c is None:
+-			return
+-		
+-		l2k = validate_certificate(l2c, rootkey)
+-		if l2k is None:
+-			return
+-			
+-		l2r = True
++	if result:
++		print "[WebIf] config changed"
++		restartWebserver(session)
++		checkBonjour()
+ 	else:
+-		l2r = True
+-		
+-	if l2r:	
+-		if result:
+-			print "[WebIf] config changed"
+-			restartWebserver(session, l2k)
+-			checkBonjour()
+-		else:
+-			print "[WebIf] config not changed"
++		print "[WebIf] config not changed"
+ 
+ def Plugins(**kwargs):
+ 	p = PluginDescriptor(where=[PluginDescriptor.WHERE_SESSIONSTART], fnc=sessionstart)
