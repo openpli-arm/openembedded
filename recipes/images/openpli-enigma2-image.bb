@@ -76,7 +76,7 @@ LOADER_VER := "20121017"
 LOADER_NAME := "uldr_${LOADER_VER}"
 BOOT_VER := "20121104"
 BOOT_NAME := "u-boot_${BOOT_VER}"
-E2_KERNEL_VER := "20121113"
+E2_KERNEL_VER := "20130417"
 E2_KERNEL_NAME := "vmlinux_${E2_KERNEL_VER}"
 ANDROID_VER := "20130305"
 ANDROID_FILE_NAME := "software_package_${ANDROID_VER}_Sen5"
@@ -116,7 +116,7 @@ MACHINE_POSTPROCESS_COMMAND = "\
 		wget https://www.dropbox.com/s/lakw3zad1m0m9d8/${LOADER_NAME}.bin;\
 	fi;\
 	if [ ! -e ${E2_KERNEL_NAME}.bin ];then\
-		wget https://www.dropbox.com/s/hzfo8rz12g00kq6/${E2_KERNEL_NAME}.bin;\
+		wget https://www.dropbox.com/s/00ucag24zmcedef/${E2_KERNEL_NAME}.bin;\
 	fi;\
 	if [ ! -e ${ANDROID_FILE_NAME}.tar.gz ];then\
 		wget https://www.dropbox.com/s/6xec1z2jir8ymoj/${ANDROID_FILE_NAME}.tar.gz;\
