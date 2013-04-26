@@ -1,0 +1,21 @@
+diff -Naur plugins-enigma2.orig/webinterface/src/WebScreens.py plugins-enigma2/webinterface/src/WebScreens.py
+--- plugins-enigma2.orig/webinterface.orig/src/WebScreens.py	2013-03-28 14:53:15.000000000 +0800
++++ plugins-enigma2/webinterface/src/WebScreens.py	2013-04-26 15:27:23.778034879 +0800
+@@ -55,7 +55,7 @@
+ 		from Components.config import config
+ 		from Components.About import about
+ 		from Components.Sources.StaticText import StaticText
+-		from Tools.StbHardware import getFPVersion
++		from Tools.DreamboxHardware import getFPVersion
+ 		from Tools.HardwareInfo import HardwareInfo
+ 
+ 		hw = HardwareInfo()
+@@ -340,7 +340,7 @@
+ 		from Components.config import config
+ 		from Components.About import about
+ 		from Components.Sources.StaticText import StaticText
+-		from Tools.StbHardware import getFPVersion
++		from Tools.DreamboxHardware import getFPVersion
+ 		from Tools.HardwareInfo import HardwareInfo
+ 
+ 		hw = HardwareInfo()
