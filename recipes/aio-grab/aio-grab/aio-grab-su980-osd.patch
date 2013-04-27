@@ -1,0 +1,22 @@
+diff -Naur git.orag/main.c git/main.c
+--- git.orag/main.c	2012-10-10 02:08:34.000000000 +0800
++++ git/main.c	2013-04-27 14:09:49.596462325 +0800
+@@ -82,8 +82,8 @@
+ void (*resize)(unsigned char *source, unsigned char *dest, int xsource, int ysource, int xdest, int ydest, int colors);
+ void combine(unsigned char *output, unsigned char *video, unsigned char *osd, int vleft, int vtop, int vwidth, int vheight, int xres, int yres);
+ 
+-enum {UNKNOWN,PALLAS,VULCAN,XILLEON,BRCM7400,BRCM7401,BRCM7405,BRCM7335,BRCM7358};
+-char *stb_name[]={"unknown","Pallas","Vulcan","Xilleon","Brcm7400","Brcm7401","Brcm7405","Brcm7335","Brcm7358"};
++enum {UNKNOWN,PALLAS,VULCAN,XILLEON,BRCM7400,BRCM7401,BRCM7405,BRCM7335,BRCM7358,SU980};
++char *stb_name[]={"unknown","Pallas","Vulcan","Xilleon","Brcm7400","Brcm7401","Brcm7405","Brcm7335","Brcm7358","SU980"};
+ int stb_type=UNKNOWN;
+ 
+ // main program
+@@ -123,6 +123,7 @@
+ 		if (strcasestr(buf,"VULCAN")) stb_type=VULCAN;
+ 		if (strcasestr(buf,"PALLAS")) stb_type=PALLAS;
+ 		if (strcasestr(buf,"XILLEON")) stb_type=XILLEON;
++		if (strcasestr(buf,"0")) stb_type=SU980;
+ 		if (strcasestr(buf,"BCM7401") || strcasestr(buf,"BCMFB")) stb_type=BRCM7401;
+ 	}
+ 	pclose(pipe);
