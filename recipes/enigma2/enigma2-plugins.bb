@@ -7,7 +7,7 @@ inherit gitpkgv
 
 PV = "experimental-git${SRCPV}"
 PKGV = "experimental-git${GITPKGV}"
-PR = "r4"
+PR = "r5"
 
 SRCREV_pn-${PN} = "748e04b7efa9cec11ce6283039649e8bb77001bd"
 
