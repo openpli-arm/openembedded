@@ -78,8 +78,6 @@ BOOT_VER := "20130428"
 BOOT_NAME := "u-boot_${BOOT_VER}"
 E2_KERNEL_VER := "20130417"
 E2_KERNEL_NAME := "vmlinux_${E2_KERNEL_VER}"
-ANDROID_VER := "20130305"
-ANDROID_FILE_NAME := "software_package_${ANDROID_VER}_Sen5"
 UPGRADE_SCRIPT_VER := "20130426"
 UPGRADE_SCRIPT_NAME := "upgrade_${UPGRADE_SCRIPT_VER}"
 
@@ -97,13 +95,6 @@ POPULATE_E2 = "\
 	cp ${DL_DIR}/${E2_KERNEL_NAME}.bin su980/e2/e2-kernel.bin;\
 	cp ${IMAGE_NAME}.rootfs.jffs2 su980/e2/e2-rootfs.jffs2;\
 "
-POPULATE_ANDROID = "\
-	mkdir -p su980/android;\
-	cp ${ANDROID_FILE_NAME}/vmlinux.bin su980/android/android-kernel.bin;\
-    cp ${ANDROID_FILE_NAME}/rootfs.arm.ubifs.nand su980/android/android-rootfs.ubifs;\
-	cp ${ANDROID_FILE_NAME}/appfs.ubifs.nand su980/android/android-appfs.ubifs;\
-    cp ${ANDROID_FILE_NAME}/Readme.txt su980/android/readme.txt;\
-"
 MACHINE_POSTPROCESS_COMMAND = "\
 	cd ${DL_DIR};\
 	if [ ! -e ${UPGRADE_SCRIPT_NAME}.scr ];then\
@@ -118,36 +109,16 @@ MACHINE_POSTPROCESS_COMMAND = "\
 	if [ ! -e ${E2_KERNEL_NAME}.bin ];then\
 		wget https://www.dropbox.com/s/00ucag24zmcedef/${E2_KERNEL_NAME}.bin;\
 	fi;\
-	if [ ! -e ${ANDROID_FILE_NAME}.tar.gz ];then\
-		wget https://www.dropbox.com/s/6xec1z2jir8ymoj/${ANDROID_FILE_NAME}.tar.gz;\
-	fi;\
 	cd ${DEPLOY_DIR_IMAGE};\
 	rm -rf release;\
 	mkdir release;\
 	rm -rf su980;\
-	rm -rf ${ANDROID_FILE_NAME};\
 	export VERSION=`date +%Y%m%d`;\
 	cp openpli-enigma2-2.0-dm800.rootfs.tar.gz release/openpli-enigma2-2.0-su980-${VERSION}.rootfs.tar.gz;\
-	tar -xzvf ${DL_DIR}/${ANDROID_FILE_NAME}.tar.gz;\
-#Generate images contains e2 and android \
-	${POPULATE_UPGRADE_SCRIPT}\
-	${POPULATE_BOOTLOADER}\
-	${POPULATE_E2}\
-	${POPULATE_ANDROID}\
-	tar -czvf release/su980-e2-android-${VERSION}.tar.gz su980;\
-	rm -rf su980;\
-#Generate e2 only image \
+#Generate e2 image \
 	${POPULATE_UPGRADE_SCRIPT}\
 	${POPULATE_BOOTLOADER}\
 	${POPULATE_E2}\
 	tar -czvf release/su980-e2-${VERSION}.tar.gz su980;\
 	rm -rf su980;\
-#Generate android only image\
-	${POPULATE_UPGRADE_SCRIPT}\
-	${POPULATE_BOOTLOADER}\
-	${POPULATE_ANDROID}\
-	tar -czvf release/su980-android-${VERSION}.tar.gz su980;\
-	rm -rf su980;\
-#remove temp files\
-	rm -rf ${ANDROID_FILE_NAME}\
 "
