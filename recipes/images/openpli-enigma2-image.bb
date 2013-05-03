@@ -74,11 +74,11 @@ export IMAGE_BASENAME = "openpli-enigma2"
 
 LOADER_VER := "20130426"
 LOADER_NAME := "uldr_${LOADER_VER}"
-BOOT_VER := "20130428"
+BOOT_VER := "20130503"
 BOOT_NAME := "u-boot_${BOOT_VER}"
 E2_KERNEL_VER := "20130417"
 E2_KERNEL_NAME := "vmlinux_${E2_KERNEL_VER}"
-UPGRADE_SCRIPT_VER := "20130426"
+UPGRADE_SCRIPT_VER := "20130503"
 UPGRADE_SCRIPT_NAME := "upgrade_${UPGRADE_SCRIPT_VER}"
 
 POPULATE_UPGRADE_SCRIPT = "\
@@ -98,10 +98,10 @@ POPULATE_E2 = "\
 MACHINE_POSTPROCESS_COMMAND = "\
 	cd ${DL_DIR};\
 	if [ ! -e ${UPGRADE_SCRIPT_NAME}.scr ];then\
-		wget https://www.dropbox.com/s/wift4g5cpsoo6pt/${UPGRADE_SCRIPT_NAME}.scr;\
+		wget https://www.dropbox.com/s/ijnl4r5hyj4vrt3/${UPGRADE_SCRIPT_NAME}.scr;\
 	fi;\
 	if [ ! -e ${BOOT_NAME}.bin ];then\
-		wget https://www.dropbox.com/s/00fiyn873vc5qxr/${BOOT_NAME}.bin;\
+		wget https://www.dropbox.com/s/yz91h4pjcsrcowg/${BOOT_NAME}.bin;\
 	fi;\
 	if [ ! -e ${LOADER_NAME}.bin ];then\
 		wget https://www.dropbox.com/s/faxul3mz77wlegk/${LOADER_NAME}.bin;\
