@@ -55,7 +55,7 @@ SRC_URI = "http://sources.dreamboxupdate.com/snapshots/dreambox-dvb-modules-${MA
 			${@base_contains("MACHINE_FEATURES", "frontprocessor", "http://sources.dreamboxupdate.com/download/7020/fpupgrade-${MACHINE}-v7", "", d)} \
 			"
 
-SRC_URI_arm = "https://www.dropbox.com/s/nypcdqblses3w0h/su980-dvb-modules-${PV}.tar.gz"
+SRC_URI_arm = "https://www.dropbox.com/s/dhlggv0cm5qvptk/su980-dvb-modules-${PV}.tar.gz"
 FILES_${PN}_append_arm = " ${base_libdir}/firmware/* ${sysconfdir}/modprobe.d/vpmfbDrv.conf"
 S = "${WORKDIR}"
 
